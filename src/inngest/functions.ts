@@ -1,14 +1,23 @@
 import { inngest } from './client';
+import { openai, createAgent } from '@inngest/agent-kit';
 
 export const helloWorld = inngest.createFunction(
   { id: 'hello-world' },
   { event: 'test/hello.world' },
-  async ({ event, step }) => {
-    // Imagine a trasnscribe the video step
-    await step.sleep('transcribe-video', '10s');
+  async ({ event }) => {
+    // Create a new agent with a system prompt (you can add optional tools, too)
+    const summarizer = createAgent({
+      name: 'summarizer',
+      system: 'You are an expert summarizer. You summarizer in 2 words.',
+      model: openai({ model: 'gpt-4o' }),
+    });
 
-    // Imagine it as s summary step
-    await step.sleep('generate-summary', '5s');
-    return { message: `Hello ${event.data.email}!` };
+    const { output } = await summarizer.run(
+      `Summarize the following text: ${event.data.value}`,
+    );
+
+    console.log(output);
+
+    return { output };
   },
 );
