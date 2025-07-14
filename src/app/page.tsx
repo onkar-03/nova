@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useTRPC } from '@/trpc/client';
@@ -27,10 +28,30 @@ const Page = () => {
         Invoke Background Job
       </Button>
     </div>
+=======
+import Client from './client';
+import { trpc, getQueryClient } from '@/trpc/server';
+import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
+import { Suspense } from 'react';
+
+// --- Use TRPC in a server component
+const Page = async () => {
+  const queryClient = getQueryClient();
+  void queryClient.prefetchQuery(
+    trpc.hello.queryOptions({ text: 'Onkar Prefetch' }),
+  );
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <Suspense fallback={<p>Loading...</p>}>
+        <Client />
+      </Suspense>
+    </HydrationBoundary>
   );
 };
 
 export default Page;
+
 
 // --- Use TRPC in Server Component
 // import Client from './client';
@@ -55,6 +76,7 @@ export default Page;
 // };
 
 // export default Page;
+
 
 // --- Use TRPC in a client component
 // 'use client';

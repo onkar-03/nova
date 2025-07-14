@@ -24,6 +24,8 @@ export const appRouter = createTRPCRouter({
 
       return { ok: `Event sent successfully` };
     }),
+
+export const appRouter = createTRPCRouter({
   hello: baseProcedure
     .input(
       z.object({
