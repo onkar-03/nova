@@ -7,14 +7,22 @@ export const appRouter = createTRPCRouter({
   invoke: baseProcedure
     .input(z.object({ text: z.string() }))
     .mutation(async ({ input }) => {
-      await inngest.send({
-        name: 'test/hello.world',
-        data: {
-          email: input.text,
-        },
-      });
+      try {
+        await inngest.send({
+          name: 'test/hello.world',
+          data: {
+            text: input.text, // Changed from 'email' to 'text' for semantic clarity
+          },
+        });
+      } catch (error) {
+        throw new Error(
+          `Failed to send event: ${
+            error instanceof Error ? error.message : 'Unknown error'
+          }`,
+        );
+      }
 
-      return { ok: `Success` };
+      return { ok: `Event sent successfully` };
     }),
   hello: baseProcedure
     .input(
