@@ -3,15 +3,15 @@ import { baseProcedure, createTRPCRouter } from '../init';
 import { inngest } from '@/inngest/client';
 
 export const appRouter = createTRPCRouter({
-  // Invoke the background Job from TRPC
+  // 1. Background job invocation
   invoke: baseProcedure
-    .input(z.object({ text: z.string() }))
+    .input(z.object({ value: z.string() }))
     .mutation(async ({ input }) => {
       try {
         await inngest.send({
           name: 'test/hello.world',
           data: {
-            text: input.text, // Changed from 'email' to 'text' for semantic clarity
+            value: input.value,
           },
         });
       } catch (error) {
@@ -25,19 +25,15 @@ export const appRouter = createTRPCRouter({
       return { ok: `Event sent successfully` };
     }),
 
-export const appRouter = createTRPCRouter({
+  // 2. Simple hello endpoint
   hello: baseProcedure
-    .input(
-      z.object({
-        text: z.string(),
-      }),
-    )
-    .query((opts) => {
+    .input(z.object({ text: z.string() }))
+    .query(({ input }) => {
       return {
-        greeting: `hello ${opts.input.text}`,
+        greeting: `hello ${input.text}`,
       };
     }),
 });
 
-// export type definition of API
+// Export API type
 export type AppRouter = typeof appRouter;
