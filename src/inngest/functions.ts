@@ -33,9 +33,10 @@ export const helloWorld = inngest.createFunction(
         },
       }),
       tools: [
+        // Tool for agent to use the Terminal
         createTool({
           name: 'terminal',
-          description: 'Use the Terminal to Run Commands',
+          description: 'Use the terminal to run commands',
           parameters: z.object({
             command: z.string(),
           }),
@@ -67,7 +68,7 @@ export const helloWorld = inngest.createFunction(
           },
         }),
         createTool({
-          name: 'CreateOrUpdateFiles',
+          name: 'createOrUpdateFiles',
           description: 'Create or update files in sandbox box',
           parameters: z.object({
             files: z.array(
@@ -79,6 +80,7 @@ export const helloWorld = inngest.createFunction(
           }),
           handler: async ({ files }, { step, network }) => {
             /**
+             * return an object like
              * {
              * "/app.tsx":"<p> app page</p>,
              * "button.tsx":'<>'
@@ -96,7 +98,7 @@ export const helloWorld = inngest.createFunction(
                   }
                   return updatedFiles;
                 } catch (e) {
-                  return 'Error:' + e;
+                  return 'Error: ' + e;
                 }
               },
             );
@@ -107,7 +109,7 @@ export const helloWorld = inngest.createFunction(
         }),
         createTool({
           name: 'readFiles',
-          description: 'Read files from sandbox',
+          description: 'Read files from the sandbox',
           parameters: z.object({ files: z.array(z.string()) }),
           handler: async ({ files }, { step }) => {
             return await step?.run('readFiles', async () => {
@@ -132,7 +134,7 @@ export const helloWorld = inngest.createFunction(
             lastAssistantTextMessageContent(result);
 
           if (lastAssistantMessageText && network) {
-            if (lastAssistantMessageText.includes('<tast_summary>')) {
+            if (lastAssistantMessageText.includes('<task_summary>')) {
               network.state.data.summary = lastAssistantMessageText;
             }
           }
@@ -142,23 +144,26 @@ export const helloWorld = inngest.createFunction(
     });
 
     const network = createNetwork({
-      name: 'code-agent-network',
+      name: 'coding-agent-network',
       agents: [codeAgent],
-      maxIter: 5,
+      // Limit how many loops an agent can do
+      // After Max 15 iteration tell agent to stop
+      maxIter: 15,
       router: async ({ network }) => {
         const summary = network.state.data.summary;
         if (summary) {
+          return;
         }
         return codeAgent;
       },
     });
 
-    const result = await network.run(event.data.run);
+    const result = await network.run(event.data.value);
 
     const sandboxUrl = await step.run('get-sandbox-url', async () => {
       const sandbox = await getSandbox(sandboxId);
       const host = sandbox.getHost(3000); // Assumes `compile_page.sh` starts server on port 3000
-      return `http://${host}`;
+      return `https://${host}`;
     });
 
     return {

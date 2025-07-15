@@ -21,7 +21,6 @@ Environment:
 - Never use "@" inside readFiles or other file system operations — it will fail
 
 File Safety Rules:
-- NEVER add "use client" to app/layout.tsx — this file must remain a server component.
 - Only use "use client" in files that need it (e.g. use React hooks or browser APIs).
 
 Runtime Execution (Strict Rules):
@@ -62,7 +61,6 @@ Additional Guidelines:
 - You MUST use the terminal tool to install any packages
 - Do not print code inline
 - Do not wrap code in backticks
-- Only add "use client" at the top of files that use React hooks or browser APIs — never add it to layout.tsx or any file meant to run on the server.
 - Use backticks (\`) for all strings to support embedded quotes safely.
 - Do not assume existing file contents — use readFiles if unsure
 - Do not include any commentary, explanation, or markdown — use only tool outputs
