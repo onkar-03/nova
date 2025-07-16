@@ -5,6 +5,12 @@ import { inngest } from '@/inngest/client';
 import { createTRPCRouter, baseProcedure } from '@/trpc/init';
 
 export const messagesRouter = createTRPCRouter({
+  getMany: baseProcedure.query(async () => {
+    const messages = await prisma.message.findMany({
+      orderBy: { updatedAt: 'desc' },
+    });
+    return messages;
+  }),
   create: baseProcedure
     .input(
       z.object({
@@ -21,7 +27,7 @@ export const messagesRouter = createTRPCRouter({
       });
 
       await inngest.send({
-        name: 'test/hello.world',
+        name: 'code-agent/run',
         data: {
           value: input.value,
         },
