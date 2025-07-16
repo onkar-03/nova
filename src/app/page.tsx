@@ -1,23 +1,24 @@
 'use client';
 
-import { useTRPC } from '@/trpc/client';
-import { useMutation, useQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useMutation } from '@tanstack/react-query';
 
 import { Button } from '@/components/ui/button';
-
 import { Input } from '@/components/ui/input';
+import { useTRPC } from '@/trpc/client';
 
 const Page = () => {
+  const router = useRouter();
   const [value, setValue] = useState('');
-  const trpc = useTRPC();
-  const { data: messages } = useQuery(trpc.messages.getMany.queryOptions());
 
-  const createMessage = useMutation(
-    trpc.messages.create.mutationOptions({
-      onSuccess: () => {
-        toast.success('Message Created');
+  const trpc = useTRPC();
+  const createProject = useMutation(
+    trpc.projects.create.mutationOptions({
+      onSuccess: (data) => {
+        router.push(`/projects/${data.id}`);
+        toast.success('✅ Project Created');
       },
       onError: (err) => {
         toast.error(`❌ Failed to invoke: ${err.message}`);
@@ -26,89 +27,25 @@ const Page = () => {
   );
 
   return (
-    <div className='p-4 max-w-7xl mx-auto'>
-      <Input
-        value={value}
-        onChange={(e) => {
-          setValue(e.target.value);
-        }}
-      ></Input>
-      <Button
-        disabled={createMessage.isPending}
-        onClick={() => {
-          createMessage.mutate({ value: value });
-        }}
-      >
-        Invoke Background Job
-      </Button>
-      {JSON.stringify(messages, null, 2)}
+    <div className='h-screen w-screen flex items-center justify-center'>
+      <div className='max-w-7xl mx-auto flex items-center justify-center flex-col gap-y-4'>
+        <Input
+          value={value}
+          onChange={(e) => {
+            setValue(e.target.value);
+          }}
+        ></Input>
+        <Button
+          disabled={createProject.isPending}
+          onClick={() => {
+            createProject.mutate({ value: value });
+          }}
+        >
+          Submit
+        </Button>
+      </div>
     </div>
   );
 };
 
 export default Page;
-
-// import Client from './client';
-// import { trpc, getQueryClient } from '@/trpc/server';
-// import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
-// import { Suspense } from 'react';
-
-// // --- Use TRPC in a server component
-// const Page = async () => {
-//   const queryClient = getQueryClient();
-//   void queryClient.prefetchQuery(
-//     trpc.hello.queryOptions({ text: 'Onkar Prefetch' }),
-//   );
-
-//   return (
-//     <HydrationBoundary state={dehydrate(queryClient)}>
-//       <Suspense fallback={<p>Loading...</p>}>
-//         <Client />
-//       </Suspense>
-//     </HydrationBoundary>
-//   );
-// };
-
-// export default Page;
-
-// --- Use TRPC in Server Component
-// import Client from './client';
-// import { trpc, getQueryClient } from '@/trpc/server';
-// import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
-// import { Suspense } from 'react';
-
-// // --- Use TRPC in a server component
-// const Page = async () => {
-//   const queryClient = getQueryClient();
-//   void queryClient.prefetchQuery(
-//     trpc.hello.queryOptions({ text: 'Onkar Prefetch' }),
-//   );
-
-//   return (
-//     <HydrationBoundary state={dehydrate(queryClient)}>
-//       <Suspense fallback={<p>Loading...</p>}>
-//         <Client />
-//       </Suspense>
-//     </HydrationBoundary>
-//   );
-// };
-
-// export default Page;
-
-// --- Use TRPC in a client component
-// 'use client';
-// import { useTRPC } from '@/trpc/client';
-// import { useQuery } from '@tanstack/react-query';
-
-// const Page = () => {
-//   // The API and its working (trpc)
-//   // Simple Way to fetch data using client component
-//   const trpc = useTRPC();
-//   const { data, ...other } = useQuery(
-//     trpc.hello.queryOptions({ text: 'Onkar' }),
-//   );
-
-//   return <div>{JSON.stringify(data)}</div>;
-// };
-
-// export default Page;
