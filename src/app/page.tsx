@@ -1,7 +1,7 @@
 'use client';
 
 import { useTRPC } from '@/trpc/client';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueries, useQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { useState } from 'react';
 
@@ -13,10 +13,11 @@ const Page = () => {
   const [value, setValue] = useState('');
 
   const trpc = useTRPC();
-  const invoke = useMutation(
-    trpc.invoke.mutationOptions({
+
+  const createMessage = useMutation(
+    trpc.messages.create.mutationOptions({
       onSuccess: () => {
-        toast.success('Background job invoked successfully!');
+        toast.success('Message Created');
       },
       onError: (err) => {
         toast.error(`❌ Failed to invoke: ${err.message}`);
@@ -33,9 +34,9 @@ const Page = () => {
         }}
       ></Input>
       <Button
-        disabled={invoke.isPending}
+        disabled={createMessage.isPending}
         onClick={() => {
-          invoke.mutate({ value: value });
+          createMessage.mutate({ value: value });
         }}
       >
         Invoke Background Job
