@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/resizable';
 import MessagesContainer from '../components/messages-container';
 import { Fragment } from '@/generated/prisma';
+import ProjectHeader from '../components/project-header';
 
 interface Props {
   projectId: string;
@@ -25,6 +26,9 @@ const ProjectView = ({ projectId }: Props) => {
           minSize={20}
           className='flex flex-col min-h-0'
         >
+          <Suspense fallback={<div>Loading Project Project...</div>}>
+            <ProjectHeader projectId={projectId} />
+          </Suspense>
           <Suspense fallback={<div>Loading Messages...</div>}>
             <MessagesContainer
               projectId={projectId}

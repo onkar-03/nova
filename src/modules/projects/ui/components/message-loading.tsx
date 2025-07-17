@@ -40,7 +40,7 @@ export const MessageLoading = () => {
       <div className='flex items-center gap-2 pt-2 mb-2'>
         <Image
           src={'/logo.svg'}
-          alt='codey'
+          alt='nova'
           width={18}
           height={18}
           className='shrink-0S'
