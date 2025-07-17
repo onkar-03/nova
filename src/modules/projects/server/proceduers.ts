@@ -3,16 +3,51 @@ import { z } from 'zod';
 import prisma from '@/lib/db';
 import { inngest } from '@/inngest/client';
 import { createTRPCRouter, baseProcedure } from '@/trpc/init';
+import { TRPCError } from '@trpc/server';
 import { generateSlug } from 'random-word-slugs';
 
+// Router to manage project-related queries and mutations
 export const projectsRouter = createTRPCRouter({
-  getMany: baseProcedure.query(async () => {
-    const projects = await prisma.project.findMany({
-      orderBy: { updatedAt: 'desc' },
-    });
-    return projects;
-  }),
+  // GET / Get a single project by its ID
+  getOne: baseProcedure
+    // Validate that an ID string is provided as input
+    .input(
+      z.object({
+        id: z.string().min(1, { message: 'Id is required' }),
+      }),
+    )
+    // Handle the query logic to fetch a project from the database
+    .query(async ({ input }) => {
+      const existingprojects = await prisma.project.findUnique({
+        where: {
+          id: input.id,
+        },
+      });
+
+      // Throw error if project not found
+      if (!existingprojects) {
+        throw new TRPCError({
+          code: 'NOT_FOUND',
+          message: 'Project not found',
+        });
+      }
+
+      return existingprojects;
+    }),
+
+  // GET / Get all projects, ordered by last update
+  getMany: baseProcedure
+    // No input required for fetching all projects
+    .query(async () => {
+      const projects = await prisma.project.findMany({
+        orderBy: { updatedAt: 'desc' },
+      });
+      return projects;
+    }),
+
+  // POST / Create a new project with an initial message
   create: baseProcedure
+    // Validate that a message value is provided for the new project
     .input(
       z.object({
         value: z
@@ -21,7 +56,9 @@ export const projectsRouter = createTRPCRouter({
           .max(10000, { message: 'Value is too long' }),
       }),
     )
+    // Mutation logic to insert a new project and trigger an async process
     .mutation(async ({ input }) => {
+      // Create project with a random slug and one initial user message
       const createdProject = await prisma.project.create({
         data: {
           name: generateSlug(2, {
@@ -37,6 +74,7 @@ export const projectsRouter = createTRPCRouter({
         },
       });
 
+      // Trigger background event via Inngest
       await inngest.send({
         name: 'code-agent/run',
         data: {
@@ -44,6 +82,7 @@ export const projectsRouter = createTRPCRouter({
           projectId: createdProject.id,
         },
       });
+
       return createdProject;
     }),
 });
