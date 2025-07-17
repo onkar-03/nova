@@ -1,13 +1,14 @@
+import Hint from '@/components/hint';
 import { Button } from '@/components/ui/button';
 import { Fragment } from '@/generated/prisma';
 import { ExternalLinkIcon, RefreshCcwIcon } from 'lucide-react';
 import { useState } from 'react';
 
-interface props {
+interface Props {
   data: Fragment;
 }
 
-const FragmentWeb = ({ data }: props) => {
+const FragmentWeb = ({ data }: Props) => {
   const [fragmentKey, setFreagmentKey] = useState(0);
   const [copied, setCopied] = useState(false);
 
@@ -25,31 +26,37 @@ const FragmentWeb = ({ data }: props) => {
   return (
     <div className='flex flex-col w-full h-full'>
       <div className='p-2 border-b bg-sidebar flex items-center gap-x-2'>
-        <Button size={'sm'} variant={'outline'} onClick={onRefreash}>
-          <RefreshCcwIcon />
-        </Button>
+        <Hint text='Refresh' side='bottom' align='start'>
+          <Button size={'sm'} variant={'outline'} onClick={onRefreash}>
+            <RefreshCcwIcon />
+          </Button>
+        </Hint>
 
-        <Button
-          size={'sm'}
-          variant={'outline'}
-          onClick={handleCopy}
-          disabled={!data.sandboxUrl || copied}
-          className='flex-1 justify-start text-start font-normal'
-        >
-          <span className='truncate'>{data.sandboxUrl}</span>
-        </Button>
+        <Hint text='Click to copy' side='bottom' align='center'>
+          <Button
+            size={'sm'}
+            variant={'outline'}
+            onClick={handleCopy}
+            disabled={!data.sandboxUrl || copied}
+            className='flex-1 justify-start text-start font-normal'
+          >
+            <span className='truncate'>{data.sandboxUrl}</span>
+          </Button>
+        </Hint>
 
-        <Button
-          size={'sm'}
-          variant={'outline'}
-          onClick={() => {
-            if (!data.sandboxUrl) return;
-            window.open(data.sandboxUrl, '_blank');
-          }}
-          disabled={!data.sandboxUrl}
-        >
-          <ExternalLinkIcon />
-        </Button>
+        <Hint text='Open in new tab' side='bottom' align='start'>
+          <Button
+            size={'sm'}
+            variant={'outline'}
+            onClick={() => {
+              if (!data.sandboxUrl) return;
+              window.open(data.sandboxUrl, '_blank');
+            }}
+            disabled={!data.sandboxUrl}
+          >
+            <ExternalLinkIcon />
+          </Button>
+        </Hint>
       </div>
 
       <iframe
