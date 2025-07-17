@@ -35,7 +35,7 @@ const Page = async ({ params }: Props) => {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       {/* Show fallback UI while the component is being streamed or loaded */}
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div>Loading Project...</div>}>
         <ProjectView projectId={projectId} />
       </Suspense>
     </HydrationBoundary>
