@@ -16,7 +16,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from './ui/breadcrumb';
-
+import { convertFilesToTreeItems } from '@/lib/utils';
 
 type FileCollection = { [path: string]: string };
 
@@ -99,6 +99,19 @@ const FileExplorer = ({ files }: FileExplorerProps) => {
 
   const [copied, setCopied] = useState(false);
 
+  const treeData = useMemo(() => {
+    return convertFilesToTreeItems(files);
+  }, [files]);
+
+  const handleFileSelect = useCallback(
+    (filepath: string) => {
+      if (files[filepath]) {
+        setSelectedFile(filepath);
+      }
+    },
+    [files],
+  );
+
   const handleCopy = () => {
     if (!selectedFile) return;
     navigator.clipboard.writeText(files[selectedFile]);
@@ -111,7 +124,11 @@ const FileExplorer = ({ files }: FileExplorerProps) => {
   return (
     <ResizablePanelGroup direction='horizontal'>
       <ResizablePanel defaultSize={30} minSize={30} className='bg-sidebar'>
-        <p>TODO: Tree View</p>
+        <TreeView
+          data={treeData}
+          value={selectedFile}
+          onSelect={handleFileSelect}
+        />
       </ResizablePanel>
 
       <ResizableHandle className='hover:bg-primary transition-colors' />
