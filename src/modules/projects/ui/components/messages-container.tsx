@@ -18,6 +18,8 @@ const MessagesContainer = ({
   setActiveFragment,
 }: Props) => {
   const buttonRef = useRef<HTMLDivElement>(null);
+  const lastAssistanceMessageIdRef = useRef<string | null>(null);
+
   const trpc = useTRPC();
 
   // Fetch all messages related to the given projectId
@@ -31,15 +33,19 @@ const MessagesContainer = ({
     ),
   );
 
-  // useEffect(() => {
-  //   const lastAssistanceMessageWithFragment = messages.findLast(
-  //     (message) => message.role === 'ASSISTANCE' && !!message.fragment,
-  //   );
+  useEffect(() => {
+    const lastAssistanceMessage = messages.findLast(
+      (message) => message.role === 'ASSISTANCE' && !!message.fragment,
+    );
 
-  //   if (lastAssistanceMessageWithFragment) {
-  //     setActiveFragment(lastAssistanceMessageWithFragment.fragment);
-  //   }
-  // }, [messages, setActiveFragment]);
+    if (
+      lastAssistanceMessage?.fragment &&
+      lastAssistanceMessage.id !== lastAssistanceMessageIdRef.current
+    ) {
+      setActiveFragment(lastAssistanceMessage.fragment);
+      lastAssistanceMessageIdRef.current = lastAssistanceMessage.id;
+    }
+  }, [messages, setActiveFragment]);
 
   useEffect(() => {
     buttonRef.current?.scrollIntoView();
