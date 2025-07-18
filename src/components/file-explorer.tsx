@@ -17,6 +17,7 @@ import {
   BreadcrumbSeparator,
 } from './ui/breadcrumb';
 import { convertFilesToTreeItems } from '@/lib/utils';
+import { TreeView } from './tree-view';
 
 type FileCollection = { [path: string]: string };
 
@@ -35,7 +36,7 @@ const FileBreadcrumb = ({ filePath }: FileBreadcrumbProps) => {
 
   const renderBredcrumbItems = () => {
     if (pathSegmanets.length <= maxSegments) {
-      //show all segmanets of 4 or less
+      //show all segmanets of 3 or less
       return pathSegmanets.map((segment, index) => {
         const isLast = index === pathSegmanets.length - 1;
 
@@ -146,7 +147,7 @@ const FileExplorer = ({ files }: FileExplorerProps) => {
                   disabled={copied}
                   onClick={handleCopy}
                 >
-                  {copied ? <CopyIcon /> : <CopyCheckIcon />}
+                  {copied ? <CopyCheckIcon /> : <CopyIcon />}
                 </Button>
               </Hint>
             </div>
