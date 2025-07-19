@@ -26,9 +26,9 @@ export const Navbar = () => {
             <SignUpButton>
               <Button variant='outline'>Sign up</Button>
             </SignUpButton>
-            <SignUpButton>
+            <SignInButton>
               <Button>Sign in</Button>
-            </SignUpButton>
+            </SignInButton>
           </div>
         </SignedOut>
         <SignedIn>
