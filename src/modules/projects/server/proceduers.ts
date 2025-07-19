@@ -17,10 +17,11 @@ export const projectsRouter = createTRPCRouter({
       }),
     )
     // Handle the query logic to fetch a project from the database
-    .query(async ({ input }) => {
+    .query(async ({ input, ctx }) => {
       const existingprojects = await prisma.project.findUnique({
         where: {
           id: input.id,
+          userId: ctx.auth.userId,
         },
       });
 
@@ -38,8 +39,11 @@ export const projectsRouter = createTRPCRouter({
   // GET / Get all projects, ordered by last update
   getMany: protectedProcedure
     // No input required for fetching all projects
-    .query(async () => {
+    .query(async ({ ctx }) => {
       const projects = await prisma.project.findMany({
+        where: {
+          userId: ctx.auth.userId,
+        },
         orderBy: { updatedAt: 'desc' },
       });
       return projects;
@@ -57,10 +61,11 @@ export const projectsRouter = createTRPCRouter({
       }),
     )
     // Mutation logic to insert a new project and trigger an async process
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx }) => {
       // Create project with a random slug and one initial user message
       const createdProject = await prisma.project.create({
         data: {
+          userId: ctx.auth.userId,
           name: generateSlug(2, {
             format: 'kebab',
           }),

@@ -80,9 +80,9 @@ const ProjectView = ({ projectId }: Props) => {
               {!!activeFragment && <FragmentWeb data={activeFragment} />}
             </TabsContent>
             <TabsContent value='code' className='min-h-0'>
-              {!!activeFragment?.file && (
+              {!!activeFragment?.files && (
                 <FileExplorer
-                  files={activeFragment.file as { [path: string]: string }}
+                  files={activeFragment.files as { [path: string]: string }}
                 />
               )}
             </TabsContent>
