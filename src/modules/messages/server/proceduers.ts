@@ -1,9 +1,9 @@
-import { z } from 'zod';
-
-import prisma from '@/lib/db';
 import { inngest } from '@/inngest/client';
-import { createTRPCRouter, protectedProcedure } from '@/trpc/init';
+import prisma from '@/lib/db';
+import { consumeCredits } from '@/lib/usage';
+import { protectedProcedure, createTRPCRouter } from '@/trpc/init';
 import { TRPCError } from '@trpc/server';
+import { z } from 'zod';
 
 // Router to manage messages (fetching and creating) scoped to a specific project
 export const messagesRouter = createTRPCRouter({
@@ -60,6 +60,22 @@ export const messagesRouter = createTRPCRouter({
           code: 'NOT_FOUND',
           message: 'Project not found',
         });
+      }
+
+      try {
+        await consumeCredits();
+      } catch (err) {
+        if (err instanceof Error) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Something went wrong',
+          });
+        } else {
+          throw new TRPCError({
+            code: 'TOO_MANY_REQUESTS',
+            message: 'You are out of credits',
+          });
+        }
       }
 
       // Create the message in the database
