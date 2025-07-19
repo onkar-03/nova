@@ -15,7 +15,7 @@ import { FRAGMENT_TITLE_PROMPT, PROMPT, RESPONSE_PROMPT } from '@/prompt';
 import { inngest } from './client';
 import { getSandbox, lastAssistantTextMessageContent } from './utils';
 import prisma from '@/lib/db';
-import { gemini } from 'inngest';
+import { SANDBOX_TIMEOUT } from './types';
 
 interface AgentState {
   summary: string;
@@ -28,6 +28,7 @@ export const codeAgentFunction = inngest.createFunction(
   async ({ event, step }) => {
     const sandboxId = await step.run('get-sandbox-id', async () => {
       const sandbox = await Sandbox.create('nova-next-js-test-2');
+      await sandbox.setTimeout(SANDBOX_TIMEOUT); // 1/2 hour
       return sandbox.sandboxId;
     });
 
@@ -46,6 +47,8 @@ export const codeAgentFunction = inngest.createFunction(
             //TODO: change to asc if AI not understand what is the latest message
             createdAt: 'desc',
           },
+          // Remember only the last 5 messages by AI
+          take: 5,
         });
 
         for (const message of messages) {
@@ -55,7 +58,8 @@ export const codeAgentFunction = inngest.createFunction(
             content: message.content,
           });
         }
-        return formattedMessages;
+        // Reverse to have the latest message at the end
+        return formattedMessages.reverse();
       },
     );
 
