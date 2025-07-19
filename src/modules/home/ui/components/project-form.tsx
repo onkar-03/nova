@@ -1,5 +1,4 @@
 'use client';
-
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -15,7 +14,6 @@ import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { PROJECT_TEMPLATES } from '@/app/(home)/constants';
 import { useClerk } from '@clerk/nextjs';
-import { createTRPCProxyClient } from '@trpc/client';
 
 const formSchema = z.object({
   value: z.string().min(1, { message: 'Value is required' }),
