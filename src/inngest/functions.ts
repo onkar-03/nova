@@ -5,14 +5,17 @@ import {
   createAgent,
   createTool,
   createNetwork,
-  Tool,
+  type Tool,
+  type Message,
+  createState,
 } from '@inngest/agent-kit';
 
-import { PROMPT } from '@/prompt';
+import { FRAGMENT_TITLE_PROMPT, PROMPT, RESPONSE_PROMPT } from '@/prompt';
 
 import { inngest } from './client';
 import { getSandbox, lastAssistantTextMessageContent } from './utils';
 import prisma from '@/lib/db';
+import { gemini } from 'inngest';
 
 interface AgentState {
   summary: string;
@@ -27,6 +30,44 @@ export const codeAgentFunction = inngest.createFunction(
       const sandbox = await Sandbox.create('nova-next-js-test-2');
       return sandbox.sandboxId;
     });
+
+    // agent memory
+
+    const previousMessages = await step.run(
+      'get-previous-messages',
+      async () => {
+        const formattedMessages: Message[] = [];
+
+        const messages = await prisma.message.findMany({
+          where: {
+            projectId: event.data.projectId,
+          },
+          orderBy: {
+            //TODO: change to asc if AI not understand what is the latest message
+            createdAt: 'desc',
+          },
+        });
+
+        for (const message of messages) {
+          formattedMessages.push({
+            type: 'text',
+            role: message.role === 'ASSISTANCE' ? 'assistant' : 'user',
+            content: message.content,
+          });
+        }
+        return formattedMessages;
+      },
+    );
+
+    const state = createState<AgentState>(
+      {
+        summary: '',
+        files: {},
+      },
+      {
+        messages: previousMessages,
+      },
+    );
 
     const codeAgent = createAgent<AgentState>({
       name: 'code-agent',
@@ -159,6 +200,7 @@ export const codeAgentFunction = inngest.createFunction(
       // Limit how many loops an agent can do
       // After Max 15 iteration tell agent to stop
       maxIter: 15,
+      defaultState: state,
       router: async ({ network }) => {
         const summary = network.state.data.summary;
         if (summary) {
@@ -168,7 +210,60 @@ export const codeAgentFunction = inngest.createFunction(
       },
     });
 
-    const result = await network.run(event.data.value);
+    const result = await network.run(event.data.value, { state: state });
+
+    const fragmentTitleGenerator = createAgent({
+      name: 'fragment-title-generator',
+      description: 'A fragment title generator',
+      system: FRAGMENT_TITLE_PROMPT,
+      model: openai({
+        model: 'gpt-4o',
+      }),
+    });
+
+    const responseGenerator = createAgent({
+      name: 'response-generator',
+      description: 'A response  generator',
+      system: RESPONSE_PROMPT,
+      model: openai({
+        model: 'gpt-4o',
+      }),
+    });
+
+    const { output: fragmentTitleOutput } = await fragmentTitleGenerator.run(
+      result.state.data.summary,
+    );
+    const { output: responseOutput } = await responseGenerator.run(
+      result.state.data.summary,
+    );
+
+    const generateFragmentTitle = () => {
+      const output = fragmentTitleOutput[0];
+
+      if (output.type !== 'text') {
+        return 'Fragment';
+      }
+
+      if (Array.isArray(output.content)) {
+        return output.content.map((txt) => txt).join('');
+      } else {
+        return output.content;
+      }
+    };
+
+    const generateResponse = () => {
+      const output = responseOutput[0];
+
+      if (output.type !== 'text') {
+        return 'Here you go';
+      }
+
+      if (Array.isArray(output.content)) {
+        return output.content.map((txt) => txt).join('');
+      } else {
+        return output.content;
+      }
+    };
 
     const isErorr =
       !result.state.data.summary ||
@@ -195,13 +290,13 @@ export const codeAgentFunction = inngest.createFunction(
       return await prisma.message.create({
         data: {
           projectId: event.data.projectId,
-          content: result.state.data.summary,
+          content: generateResponse(),
           role: 'ASSISTANCE',
           type: 'RESULT',
           fragment: {
             create: {
               sandboxUrl: sandboxUrl,
-              title: 'Fragment',
+              title: generateFragmentTitle(),
               files: result.state.data.files,
             },
           },

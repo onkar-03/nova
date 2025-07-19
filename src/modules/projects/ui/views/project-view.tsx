@@ -1,5 +1,4 @@
 'use client';
-
 import { Suspense, useState } from 'react';
 import {
   ResizableHandle,
