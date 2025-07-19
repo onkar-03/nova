@@ -14,6 +14,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 import { useRouter } from 'next/navigation';
+import { Usage } from './usage';
 
 interface props {
   projectId: string;
@@ -73,10 +74,11 @@ const MessageForm = ({ projectId }: props) => {
   const isPending = createMessage.isPending;
   const isButtonDisabled = isPending || !form.formState.isValid;
   const [isFocuesd, setIsFocused] = useState(false);
-  const showUsage = false;
+  const showUsage = true;
 
   return (
     <Form {...form}>
+      {showUsage && <Usage points={0} msBeforeNext={0} />}
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className={cn(
