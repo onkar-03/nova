@@ -10,10 +10,11 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { Button } from '@/components/ui/button';
 import { ArrowUpIcon, Loader2Icon } from 'lucide-react';
 import { useTRPC } from '@/trpc/client';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 import { useRouter } from 'next/navigation';
+import { Usage } from './usage';
 
 interface props {
   projectId: string;
@@ -51,7 +52,7 @@ const MessageForm = ({ projectId }: props) => {
           }),
         );
 
-        // Invalidate Status
+        queryClient.invalidateQueries(trpc.usage.status.queryOptions());
       },
 
       onError: (error) => {
@@ -79,6 +80,12 @@ const MessageForm = ({ projectId }: props) => {
 
   return (
     <Form {...form}>
+      {showUsage && (
+        <Usage
+          points={usage.remainingPoints}
+          msBeforeNext={usage.msBeforeNext}
+        />
+      )}
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className={cn(
