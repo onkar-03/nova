@@ -6,7 +6,6 @@ import { SignedOut, SignInButton, SignUpButton, SignedIn } from '@clerk/nextjs';
 import { cn } from '@/lib/utils';
 
 import { Button } from '@/components/ui/button';
-import { User } from 'lucide-react';
 import { UserControl } from '@/components/user-control';
 
 export const Navbar = () => {
