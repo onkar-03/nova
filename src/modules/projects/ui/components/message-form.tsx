@@ -52,7 +52,7 @@ const MessageForm = ({ projectId }: props) => {
           }),
         );
 
-        // Invalidate Status
+        queryClient.invalidateQueries(trpc.usage.status.queryOptions());
       },
 
       onError: (error) => {

@@ -15,6 +15,7 @@ import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { PROJECT_TEMPLATES } from '@/app/(home)/constants';
 import { useClerk } from '@clerk/nextjs';
+import { createTRPCProxyClient } from '@trpc/client';
 
 const formSchema = z.object({
   value: z.string().min(1, { message: 'Value is required' }),
@@ -37,6 +38,7 @@ const ProjectForm = () => {
     trpc.projects.create.mutationOptions({
       onSuccess: (data) => {
         queryClient.invalidateQueries(trpc.projects.getMany.queryOptions());
+        queryClient.invalidateQueries(trpc.usage.status.queryOptions());
         router.push(`/projects/${data.id}`);
       },
       onError: (error) => {
@@ -45,7 +47,9 @@ const ProjectForm = () => {
         if (error?.data?.code === 'UNAUTHORIZED') {
           clerk.openSignIn();
         }
-        // TODO: Redirect to pricing page if specific error
+        if (error.data?.code === 'TOO_MANY_REQUESTS') {
+          router.push('/pricing');
+        }
       },
     }),
   );

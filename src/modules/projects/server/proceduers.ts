@@ -5,6 +5,7 @@ import { inngest } from '@/inngest/client';
 import { createTRPCRouter, protectedProcedure } from '@/trpc/init';
 import { TRPCError } from '@trpc/server';
 import { generateSlug } from 'random-word-slugs';
+import { consumeCredits } from '@/lib/usage';
 
 // Router to manage project-related queries and mutations
 export const projectsRouter = createTRPCRouter({
@@ -62,6 +63,22 @@ export const projectsRouter = createTRPCRouter({
     )
     // Mutation logic to insert a new project and trigger an async process
     .mutation(async ({ input, ctx }) => {
+      try {
+        await consumeCredits();
+      } catch (err) {
+        if (err instanceof Error) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'Something went wrong',
+          });
+        } else {
+          throw new TRPCError({
+            code: 'TOO_MANY_REQUESTS',
+            message: 'You are out of credits',
+          });
+        }
+      }
+
       // Create project with a random slug and one initial user message
       const createdProject = await prisma.project.create({
         data: {
