@@ -16,6 +16,7 @@ import { Button } from '@/components/ui/button';
 import FileExplorer from '@/components/file-explorer';
 import { UserControl } from '@/components/user-control';
 import { useAuth } from '@clerk/nextjs';
+import { ErrorBoundary } from 'react-error-boundary';
 
 interface Props {
   projectId: string;
@@ -38,16 +39,20 @@ const ProjectView = ({ projectId }: Props) => {
           minSize={20}
           className='flex flex-col min-h-0'
         >
-          <Suspense fallback={<div>Loading Project Project...</div>}>
-            <ProjectHeader projectId={projectId} />
-          </Suspense>
-          <Suspense fallback={<div>Loading Messages...</div>}>
-            <MessagesContainer
-              projectId={projectId}
-              activeFragment={activeFragment}
-              setActiveFragment={setactiveFragment}
-            />
-          </Suspense>
+          <ErrorBoundary fallback={<p>Project Header Error!</p>}>
+            <Suspense fallback={<div>Loading Project...</div>}>
+              <ProjectHeader projectId={projectId} />
+            </Suspense>
+          </ErrorBoundary>
+          <ErrorBoundary fallback={<p>Error loading messages!</p>}>
+            <Suspense fallback={<div>Loading Messages...</div>}>
+              <MessagesContainer
+                projectId={projectId}
+                activeFragment={activeFragment}
+                setActiveFragment={setactiveFragment}
+              />
+            </Suspense>
+          </ErrorBoundary>
         </ResizablePanel>
         <ResizableHandle className='hover:bg-primary transition-colors' />
         <ResizablePanel defaultSize={65} minSize={50}>
