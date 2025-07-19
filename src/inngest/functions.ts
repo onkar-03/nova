@@ -15,7 +15,6 @@ import { FRAGMENT_TITLE_PROMPT, PROMPT, RESPONSE_PROMPT } from '@/prompt';
 import { inngest } from './client';
 import { getSandbox, lastAssistantTextMessageContent } from './utils';
 import prisma from '@/lib/db';
-import { gemini } from 'inngest';
 
 interface AgentState {
   summary: string;
