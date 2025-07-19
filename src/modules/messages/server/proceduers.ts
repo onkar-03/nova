@@ -2,12 +2,12 @@ import { z } from 'zod';
 
 import prisma from '@/lib/db';
 import { inngest } from '@/inngest/client';
-import { createTRPCRouter, baseProcedure } from '@/trpc/init';
+import { createTRPCRouter, protectedProcedure } from '@/trpc/init';
 
 // Router to manage messages (fetching and creating) scoped to a specific project
 export const messagesRouter = createTRPCRouter({
   // 📥 Get all messages for a specific project
-  getMany: baseProcedure
+  getMany: protectedProcedure
     // Validate that a non-empty projectId is provided
     .input(
       z.object({
@@ -30,7 +30,7 @@ export const messagesRouter = createTRPCRouter({
     }),
 
   // Create a new message for a specific project
-  create: baseProcedure
+  create: protectedProcedure
     // Validate input for message content and associated projectId
     .input(
       z.object({
