@@ -10,7 +10,7 @@ import TextareaAutosize from 'react-textarea-autosize';
 import { Button } from '@/components/ui/button';
 import { ArrowUpIcon, Loader2Icon } from 'lucide-react';
 import { useTRPC } from '@/trpc/client';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
 import { useRouter } from 'next/navigation';
@@ -31,6 +31,8 @@ const MessageForm = ({ projectId }: props) => {
   const queryClient = useQueryClient();
   const trpc = useTRPC();
   const router = useRouter();
+
+  const { data: usage } = useQuery(trpc.usage.status.queryOptions());
 
   const form = useForm<z.infer<typeof formScema>>({
     resolver: zodResolver(formScema),
@@ -74,11 +76,16 @@ const MessageForm = ({ projectId }: props) => {
   const isPending = createMessage.isPending;
   const isButtonDisabled = isPending || !form.formState.isValid;
   const [isFocuesd, setIsFocused] = useState(false);
-  const showUsage = true;
+  const showUsage = !!usage;
 
   return (
     <Form {...form}>
-      {showUsage && <Usage points={0} msBeforeNext={0} />}
+      {showUsage && (
+        <Usage
+          points={usage.remainingPoints}
+          msBeforeNext={usage.msBeforeNext}
+        />
+      )}
       <form
         onSubmit={form.handleSubmit(onSubmit)}
         className={cn(
