@@ -30,6 +30,9 @@ export const Navbar = () => {
             </SignUpButton>
           </div>
         </SignedOut>
+        <SignedIn>
+          <p>TODO: User Control</p>
+        </SignedIn>
       </div>
     </nav>
   );
