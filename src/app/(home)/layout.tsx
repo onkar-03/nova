@@ -1,3 +1,6 @@
+import { Navbar } from '@/modules/home/ui/components/navbar';
+import { Nav } from 'react-day-picker';
+
 interface props {
   children: React.ReactNode;
 }
@@ -5,6 +8,7 @@ interface props {
 const layout = ({ children }: props) => {
   return (
     <div>
+      <Navbar />
       <main className=' flex flex-col min-h-screen max-h-screen'>
         <div
           className='absolute inset-0 -z-10 h-full bg-background

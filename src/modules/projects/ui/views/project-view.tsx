@@ -15,6 +15,7 @@ import Link from 'next/link';
 import { EyeIcon, CodeIcon, CrownIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import FileExplorer from '@/components/file-explorer';
+import { UserControl } from '@/components/user-control';
 
 interface Props {
   projectId: string;
@@ -72,15 +73,16 @@ const ProjectView = ({ projectId }: Props) => {
                     Upgrade
                   </Link>
                 </Button>
+                <UserControl />
               </div>
             </div>
             <TabsContent value='preview'>
               {!!activeFragment && <FragmentWeb data={activeFragment} />}
             </TabsContent>
             <TabsContent value='code' className='min-h-0'>
-              {!!activeFragment?.file && (
+              {!!activeFragment?.files && (
                 <FileExplorer
-                  files={activeFragment.file as { [path: string]: string }}
+                  files={activeFragment.files as { [path: string]: string }}
                 />
               )}
             </TabsContent>
