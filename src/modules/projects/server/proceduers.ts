@@ -63,22 +63,25 @@ export const projectsRouter = createTRPCRouter({
     )
     // Mutation logic to insert a new project and trigger an async process
     .mutation(async ({ input, ctx }) => {
-      // try {
-      //   await consumeCredits();
-      // } catch (err) {
-      //   console.error('consumeCredits error:', err);
-      //   if (err instanceof Error) {
-      //     throw new TRPCError({
-      //       code: 'BAD_REQUEST',
-      //       message: 'Something went wrong',
-      //     });
-      //   } else {
-      //     throw new TRPCError({
-      //       code: 'TOO_MANY_REQUESTS',
-      //       message: 'You are out of credits',
-      //     });
-      //   }
-      // }
+      // Robust error handling for credit consumption
+      try {
+        // Uncomment and use consumeCredits
+        const { consumeCredits } = await import('@/lib/usage');
+        await consumeCredits();
+      } catch (err) {
+        // Out of credits (rate-limiter-flexible throws a RateLimiterRes object)
+        if (err && typeof err === 'object' && 'msBeforeNext' in err) {
+          throw new TRPCError({
+            code: 'TOO_MANY_REQUESTS',
+            message: 'You are out of credits',
+          });
+        }
+        // Not authenticated or other error
+        throw new TRPCError({
+          code: 'BAD_REQUEST',
+          message: err instanceof Error ? err.message : 'Something went wrong',
+        });
+      }
 
       // Create project with a random slug and one initial user message
       const createdProject = await prisma.project.create({

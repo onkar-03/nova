@@ -65,6 +65,7 @@ export const messagesRouter = createTRPCRouter({
       try {
         await consumeCredits();
       } catch (err) {
+        console.error('Error consuming credits:', err);
         if (err instanceof Error) {
           throw new TRPCError({
             code: 'BAD_REQUEST',
