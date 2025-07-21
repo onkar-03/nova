@@ -34,25 +34,6 @@ Live sandboxed environments with hot reload and instant preview
 
 <img src="./public/docs/images/real-time-preview.png" alt="Real-time Preview" width="600"/>
 
-### 🎨 Modern UI Components
-
-Pre-built Shadcn/UI components with Tailwind CSS styling - Nova generates beautiful, responsive interfaces using:
-
-**Available Components:**
-
-- 🔘 **Forms & Inputs**: Contact forms, search bars, data entry
-- 🎛️ **Navigation**: Responsive navbars, sidebars, breadcrumbs
-- 📊 **Data Display**: Tables, cards, charts, dashboards
-- 🎨 **Interactive**: Modals, dropdowns, tabs, accordions
-- 📱 **Mobile-First**: Responsive design out of the box
-
-**AI-Generated UI Features:**
-
-- ✨ **Smart Layouts**: AI understands design principles
-- 🎯 **Context-Aware**: Components match your app's purpose
-- 🎨 **Consistent Styling**: Unified design system
-- ♿ **Accessible**: ARIA labels and keyboard navigation
-
 ### 🔐 Authentication & Security
 
 Secure user management with Clerk authentication
