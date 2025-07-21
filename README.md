@@ -22,55 +22,58 @@ Nova empowers developers and non-technical users to build modern web application
 
 ## ✨ Features
 
-<table>
-<tr>
-<td width="50%">
-
 ### 🤖 AI-Powered Code Generation
 
 Advanced multi-agent system using GPT-4 for intelligent code creation
 
-<img src="./public/docs/images/ai-code-generation.png" alt="AI Code Generation" width="100%"/>
-
-</td>
-<td width="50%">
+<img src="./public/docs/images/ai-code-generation.png" alt="AI Code Generation" width="600"/>
 
 ### ⚡ Real-time Development
 
 Live sandboxed environments with hot reload and instant preview
 
-<img src="./public/docs/images/real-time-preview.png" alt="Real-time Preview" width="100%"/>
-
-</td>
-</tr>
-<tr>
-<td width="50%">
+<img src="./public/docs/images/real-time-preview.png" alt="Real-time Preview" width="600"/>
 
 ### 🎨 Modern UI Components
 
-Pre-built Shadcn/UI components with Tailwind CSS styling
+Pre-built Shadcn/UI components with Tailwind CSS styling - Nova generates beautiful, responsive interfaces using:
 
-<img src="./public/docs/images/ui-components.png" alt="UI Components" width="100%"/>
+**Available Components:**
 
-</td>
-<td width="50%">
+- 🔘 **Forms & Inputs**: Contact forms, search bars, data entry
+- 🎛️ **Navigation**: Responsive navbars, sidebars, breadcrumbs
+- 📊 **Data Display**: Tables, cards, charts, dashboards
+- 🎨 **Interactive**: Modals, dropdowns, tabs, accordions
+- 📱 **Mobile-First**: Responsive design out of the box
+
+**AI-Generated UI Features:**
+
+- ✨ **Smart Layouts**: AI understands design principles
+- 🎯 **Context-Aware**: Components match your app's purpose
+- 🎨 **Consistent Styling**: Unified design system
+- ♿ **Accessible**: ARIA labels and keyboard navigation
 
 ### 🔐 Authentication & Security
 
 Secure user management with Clerk authentication
 
-<img src="./public/docs/images/authentication.png" alt="Authentication" width="100%"/>
+<img src="./public/docs/images/authentication.png" alt="Authentication" width="600"/>
 
-</td>
-</tr>
-</table>
+### 📊 Project Management
 
-**Additional Features:**
+Organize and track multiple projects with persistent storage
 
-- **📊 Project Management**: Organize and track multiple projects with persistent storage
-- **🛠️ Tool Integration**: Automated dependency management and file system operations
-- **📱 Responsive Design**: Mobile-first approach with modern, professional interfaces
-- **🚀 Production Ready**: Built with TypeScript, Prisma ORM, and enterprise-grade architecture
+### 🛠️ Tool Integration
+
+Automated dependency management and file system operations
+
+### 📱 Responsive Design
+
+Mobile-first approach with modern, professional interfaces
+
+### 🚀 Production Ready
+
+Built with TypeScript, Prisma ORM, and enterprise-grade architecture
 
 ## 🛠️ Tech Stack
 
@@ -182,37 +185,58 @@ nova/
 
 ## 🎯 Key Features Deep Dive
 
-### Multi-Agent Architecture
-
-<img src="./public/docs/images/multi-agent-architecture.png" alt="Multi-Agent Architecture Diagram" width="600" align="right"/>
+### 🤖 Multi-Agent Architecture
 
 Nova uses a sophisticated multi-agent system where specialized AI agents handle different aspects of development:
+
+```mermaid
+graph TD
+    A[User Request] --> B[Code Generation Agent]
+    A --> C[Terminal Agent]
+    A --> D[File System Agent]
+    B --> E[React Components & Logic]
+    C --> F[Package Installation & Commands]
+    D --> G[File Creation & Updates]
+    E --> H[Live Preview]
+```
 
 - **Code Generation Agent**: Creates React components and application logic
 - **Terminal Agent**: Manages package installation and system commands
 - **File System Agent**: Handles file creation, updates, and organization
 
-<br clear="right"/>
-
-### Sandboxed Execution
-
-<img src="./public/docs/gifs/sandbox-execution.gif" alt="Sandboxed Execution" width="600"/>
+### ⚡ Sandboxed Execution
 
 Every generated application runs in isolated E2B sandboxes, providing:
 
-- Safe code execution environment
-- Real-time preview capabilities
-- Automatic dependency management
-- Hot reload functionality
+- **Safe code execution environment** - Isolated from your local system
+- **Real-time preview capabilities** - See changes instantly
+- **Automatic dependency management** - No manual package installation
+- **Hot reload functionality** - Changes reflect immediately
 
-### Smart Project Management
+**Benefits:**
 
-<img src="./public/docs/images/project-management.png" alt="Project Management Interface" width="600"/>
+- 🔒 **Security**: Code runs in isolated containers
+- 🚀 **Speed**: Pre-configured environments ready instantly
+- 🔄 **Reliability**: Consistent execution across all projects
+- 🛠️ **Automation**: No manual environment setup required
+
+### 📊 Smart Project Management
+
+Nova provides comprehensive project organization and tracking:
+
+**Project Features:**
 
 - **Project Persistence**: All projects are saved with full code history
 - **Message Threading**: Conversational development with context awareness
 - **Fragment System**: Modular code generation and updates
 - **Usage Tracking**: Monitor AI resource consumption
+
+**Organization:**
+
+- 📁 **Project Dashboard**: Clean interface for managing multiple projects
+- 💬 **Conversation History**: Full chat logs with AI for each project
+- 🔄 **Version Control**: Track changes and iterations
+- 📈 **Analytics**: Usage statistics and performance metrics
 
 ## 🧪 Development Scripts
 
