@@ -198,27 +198,29 @@ graph LR
     E --> F[Live Preview]
     F --> G[Hot Reload]
     G --> E
-    
+
     subgraph "Sandbox Environment"
         C
         D
         E
     end
-    
+
     subgraph "Security Layer"
         H[File System Isolation]
-        I[Network Isolation] 
+        I[Network Isolation]
         J[Resource Limits]
     end
 ```
 
 **Core Capabilities:**
+
 - **Safe code execution environment** - Isolated from your local system
 - **Real-time preview capabilities** - See changes instantly
 - **Automatic dependency management** - No manual package installation
 - **Hot reload functionality** - Changes reflect immediately
 
 **Benefits:**
+
 - 🔒 **Security**: Code runs in isolated containers
 - 🚀 **Speed**: Pre-configured environments ready instantly
 - 🔄 **Reliability**: Consistent execution across all projects
@@ -237,36 +239,38 @@ graph TB
     E --> F[Fragment Creation]
     F --> G[Project Update]
     G --> H[Usage Tracking]
-    
+
     subgraph "Project Storage"
         I[Project Metadata]
         J[Message History]
         K[Code Fragments]
         L[Usage Analytics]
     end
-    
+
     B --> I
     C --> J
     F --> K
     H --> L
-    
+
     subgraph "User Dashboard"
         M[Project List]
         N[Search & Filter]
         O[Analytics View]
     end
-    
+
     I --> M
     L --> O
 ```
 
 **Project Features:**
+
 - **Project Persistence**: All projects are saved with full code history
 - **Message Threading**: Conversational development with context awareness
 - **Fragment System**: Modular code generation and updates
 - **Usage Tracking**: Monitor AI resource consumption
 
 **Organization:**
+
 - 📁 **Project Dashboard**: Clean interface for managing multiple projects
 - 💬 **Conversation History**: Full chat logs with AI for each project
 - 🔄 **Version Control**: Track changes and iterations
@@ -297,16 +301,6 @@ npm run postinstall # Generate Prisma client
 FROM node:18-alpine AS deps
 # ... (Docker configuration available in project)
 ```
-
-## 🤝 Contributing
-
-We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
 
 ## 🙏 Acknowledgments
 
