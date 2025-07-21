@@ -206,15 +206,38 @@ graph TD
 
 ### ⚡ Sandboxed Execution
 
-Every generated application runs in isolated E2B sandboxes, providing:
+Every generated application runs in isolated E2B sandboxes, providing secure and reliable code execution:
 
+```mermaid
+graph LR
+    A[User Code Request] --> B[E2B Sandbox Creation]
+    B --> C[Isolated Container]
+    C --> D[Package Installation]
+    D --> E[Code Execution]
+    E --> F[Live Preview]
+    F --> G[Hot Reload]
+    G --> E
+    
+    subgraph "Sandbox Environment"
+        C
+        D
+        E
+    end
+    
+    subgraph "Security Layer"
+        H[File System Isolation]
+        I[Network Isolation] 
+        J[Resource Limits]
+    end
+```
+
+**Core Capabilities:**
 - **Safe code execution environment** - Isolated from your local system
 - **Real-time preview capabilities** - See changes instantly
 - **Automatic dependency management** - No manual package installation
 - **Hot reload functionality** - Changes reflect immediately
 
 **Benefits:**
-
 - 🔒 **Security**: Code runs in isolated containers
 - 🚀 **Speed**: Pre-configured environments ready instantly
 - 🔄 **Reliability**: Consistent execution across all projects
@@ -222,17 +245,47 @@ Every generated application runs in isolated E2B sandboxes, providing:
 
 ### 📊 Smart Project Management
 
-Nova provides comprehensive project organization and tracking:
+Nova provides comprehensive project organization and tracking with intelligent workflow management:
+
+```mermaid
+graph TB
+    A[New Project] --> B[Project Creation]
+    B --> C[Conversation Thread]
+    C --> D[AI Message Processing]
+    D --> E[Code Generation]
+    E --> F[Fragment Creation]
+    F --> G[Project Update]
+    G --> H[Usage Tracking]
+    
+    subgraph "Project Storage"
+        I[Project Metadata]
+        J[Message History]
+        K[Code Fragments]
+        L[Usage Analytics]
+    end
+    
+    B --> I
+    C --> J
+    F --> K
+    H --> L
+    
+    subgraph "User Dashboard"
+        M[Project List]
+        N[Search & Filter]
+        O[Analytics View]
+    end
+    
+    I --> M
+    L --> O
+```
 
 **Project Features:**
-
 - **Project Persistence**: All projects are saved with full code history
 - **Message Threading**: Conversational development with context awareness
 - **Fragment System**: Modular code generation and updates
 - **Usage Tracking**: Monitor AI resource consumption
 
 **Organization:**
-
 - 📁 **Project Dashboard**: Clean interface for managing multiple projects
 - 💬 **Conversation History**: Full chat logs with AI for each project
 - 🔄 **Version Control**: Track changes and iterations
