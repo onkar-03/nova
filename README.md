@@ -294,15 +294,13 @@ npm run postinstall # Generate Prisma client
 2. Configure environment variables in Vercel dashboard
 3. Deploy automatically on every push to main branch
 
-### Docker
+### Alternative Platforms
 
-```dockerfile
-# Production deployment with multi-stage build
-FROM node:18-alpine AS deps
-# ... (Docker configuration available in project)
-```
+- **Netlify**: Connect GitHub repo and deploy
+- **Railway**: Great for full-stack apps with database
+- **Render**: Simple deployment with automatic builds
 
-## 🙏 Acknowledgments
+## 🤝 Contributing
 
 - [Next.js](https://nextjs.org/) - The React framework for production
 - [Shadcn/UI](https://ui.shadcn.com/) - For the beautiful component library
