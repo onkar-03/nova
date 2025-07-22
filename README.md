@@ -5,7 +5,7 @@
 <div align="center">
   <img src="./public/docs/images/nova-hero.png" alt="Nova Platform Interface" width="800"/>
   
-  [![Demo](https://img.shields.io/badge/View-Live%20Demo-blue?style=for-the-badge)](https://your-demo-url.com)
+  [![Demo](https://img.shields.io/badge/View-Live%20Demo-blue?style=for-the-badge)](https://buildwithnova.vercel.app/)
   [![GitHub](https://img.shields.io/badge/GitHub-Repository-black?style=for-the-badge&logo=github)](https://github.com/onkar-03/nova)
 </div>
 
@@ -300,7 +300,7 @@ npm run postinstall # Generate Prisma client
 - **Railway**: Great for full-stack apps with database
 - **Render**: Simple deployment with automatic builds
 
-## 🤝 Contributing
+## 🙏 Acknowledgments
 
 - [Next.js](https://nextjs.org/) - The React framework for production
 - [Shadcn/UI](https://ui.shadcn.com/) - For the beautiful component library
