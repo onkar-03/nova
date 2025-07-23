@@ -32,7 +32,7 @@ Advanced multi-agent system using GPT-4 for intelligent code creation
 
 Live sandboxed environments with hot reload and instant preview
 
-<img src="./public/docs/images/real-time-preview.png" alt="Real-time Preview" width="600"/>
+<img src="./public/docs/images/real-time-preview.png" alt="Real-time Preview" width="600"/>labels and keyboard navigation
 
 ### 🔐 Authentication & Security
 
@@ -187,32 +187,7 @@ graph TD
 
 ### ⚡ Sandboxed Execution
 
-Every generated application runs in isolated E2B sandboxes, providing secure and reliable code execution:
-
-```mermaid
-graph LR
-    A[User Code Request] --> B[E2B Sandbox Creation]
-    B --> C[Isolated Container]
-    C --> D[Package Installation]
-    D --> E[Code Execution]
-    E --> F[Live Preview]
-    F --> G[Hot Reload]
-    G --> E
-
-    subgraph "Sandbox Environment"
-        C
-        D
-        E
-    end
-
-    subgraph "Security Layer"
-        H[File System Isolation]
-        I[Network Isolation]
-        J[Resource Limits]
-    end
-```
-
-**Core Capabilities:**
+Every generated application runs in isolated E2B sandboxes, providing:
 
 - **Safe code execution environment** - Isolated from your local system
 - **Real-time preview capabilities** - See changes instantly
@@ -228,39 +203,7 @@ graph LR
 
 ### 📊 Smart Project Management
 
-Nova provides comprehensive project organization and tracking with intelligent workflow management:
-
-```mermaid
-graph TB
-    A[New Project] --> B[Project Creation]
-    B --> C[Conversation Thread]
-    C --> D[AI Message Processing]
-    D --> E[Code Generation]
-    E --> F[Fragment Creation]
-    F --> G[Project Update]
-    G --> H[Usage Tracking]
-
-    subgraph "Project Storage"
-        I[Project Metadata]
-        J[Message History]
-        K[Code Fragments]
-        L[Usage Analytics]
-    end
-
-    B --> I
-    C --> J
-    F --> K
-    H --> L
-
-    subgraph "User Dashboard"
-        M[Project List]
-        N[Search & Filter]
-        O[Analytics View]
-    end
-
-    I --> M
-    L --> O
-```
+Nova provides comprehensive project organization and tracking:
 
 **Project Features:**
 
@@ -294,11 +237,13 @@ npm run postinstall # Generate Prisma client
 2. Configure environment variables in Vercel dashboard
 3. Deploy automatically on every push to main branch
 
-### Alternative Platforms
+### Docker
 
-- **Netlify**: Connect GitHub repo and deploy
-- **Railway**: Great for full-stack apps with database
-- **Render**: Simple deployment with automatic builds
+```dockerfile
+# Production deployment with multi-stage build
+FROM node:18-alpine AS deps
+# ... (Docker configuration available in project)
+```
 
 ## 🙏 Acknowledgments
 

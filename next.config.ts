@@ -1,8 +1,21 @@
-import type { NextConfig } from 'next';
-
-const nextConfig: NextConfig = {
-  // for build process
-  // eslint: { ignoreDuringBuilds: true },
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  webpack: (config, { isServer }) => {
+    // Exclude system directories from being watched/scanned
+    config.watchOptions = {
+      eslint: { ignoreDuringBuilds: true },
+      ...config.watchOptions,
+      ignored: [
+        '**/node_modules/**',
+        '**/.git/**',
+        '**/C:/Users/*/Cookies/**',
+        '**/C:/Users/*/AppData/**',
+        '**/C:/Windows/**',
+        '**/System32/**',
+      ],
+    };
+    return config;
+  },
 };
 
-export default nextConfig;
+module.exports = nextConfig;
