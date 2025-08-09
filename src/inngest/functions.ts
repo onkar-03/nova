@@ -51,9 +51,13 @@ export const codeAgentFunction = inngest.createFunction(
           take: 5,
         });
 
+        // Format messages for the agent
         for (const message of messages) {
           formattedMessages.push({
             type: 'text',
+
+            // Convert role to agent's expected format
+            // 'ASSISTANCE' -> 'assistant', 'USER' -> 'user'
             role: message.role === 'ASSISTANCE' ? 'assistant' : 'user',
             content: message.content,
           });
